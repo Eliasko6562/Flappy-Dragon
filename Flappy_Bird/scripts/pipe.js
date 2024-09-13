@@ -7,12 +7,12 @@ class Pipe {
     }
 
     draw() {
-        c.drawImage(pillars, this.x - player.x, this.y, this.w, this.h);
+        c.drawImage(pillars,this.x - player.x, this.y, this.w, this.h);
     }
 }
 
 function pipeGeneration() {
-    if (pipes.length < 6) {
+    if (pipes.length < 8) {
         genPipe();
     }
     if (pipes.length != 0 && pipes[0].x - player.x + 100 + pipes[0].w < 0) {
@@ -22,6 +22,6 @@ function pipeGeneration() {
 
 function genPipe() {
     let num = Math.floor(Math.random() * (canvas.height - 200));
-    pipes.push(new Pipe(pipes[pipes.length - 1].x + 300, 0, 50, num));
-    pipes.push(new Pipe(pipes[pipes.length - 1].x, num + 200, 50, canvas.height - num - 200));
+    pipes.push(new Pipe(pipes[pipes.length - 1].x + 300, - (canvas.height - 200 - num), 75, canvas.height - 200));
+    pipes.push(new Pipe(pipes[pipes.length - 1].x,num + 200, 75, canvas.height - 200));
 }

@@ -3,11 +3,17 @@ class Player {
         this.x = 100
         this.y = 100
         this.scale = 50
-        this.color = "red"
-        this.jumpPower = 700
-        this.gravity = 45
+        this.jumpPower = 300
+        this.gravity = 700
         this.yVelocity = 0
         this.speed = 250
+
+        this.dragonStart = new Image();
+        this.dragonStart.src = "../images/dragonStart.png";
+        this.dragonEnd = new Image();
+        this.dragonEnd.src = "../images/dragonEnd.png";
+        this.dragonMid = new Image();
+        this.dragonMid.src = "../images/dragonMid.png";
     }
 
     update() {
@@ -24,16 +30,13 @@ class Player {
     }
 
     applyGravity() {
-        this.yVelocity -= this.gravity;
+        this.yVelocity -= this.gravity * frametime;
         this.y -= this.yVelocity * frametime;
 
-        // Check if player has reached the bottom of the canvas
         if (this.y + this.scale > canvas.height) {
             this.y = canvas.height - this.scale;
             this.yVelocity = 0;
         }
-
-        // Check if player has reached the top of the canvas
         if (this.y < 0) {
             this.y = 0;
             this.yVelocity = 0;
@@ -53,8 +56,14 @@ class Player {
     }
 
     draw() {
-        c.fillStyle = this.color;
-        c.fillRect(100, this.y, this.scale, this.scale);
+        if (this.yVelocity < -75   ) {
+            c.drawImage(this.dragonStart, 100, this.y, this.scale, this.scale); 
+        } else if ( this.yVelocity <= -5) {
+            c.drawImage(this.dragonMid, 100, this.y, this.scale, this.scale);
+        } else if (this.yVelocity > -3) {
+            c.drawImage(this.dragonEnd, 100, this.y, this.scale, this.scale);
+        }
+        
     }
 }
 

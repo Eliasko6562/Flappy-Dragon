@@ -6,12 +6,13 @@ let click = false;
 let clickedLastFrame = false;
 let pipes = [new Pipe(canvas.width, -5, 1, 1)];
 let frametime = Date.now();
-const pillars = new Image();
-pillars.src = "../images/Pillar.png";
+let pillars = new Image();
+    pillars.src = "../images/Pillar.png";
+let background = new Background();
 
 function main() {
     frametime = (Date.now() - frametime) / 1000;
-    clearBackground("white");
+    background.update();
 
     player.update();
     for (let i = 0; i < pipes.length; i++) {
@@ -20,15 +21,9 @@ function main() {
     pipeGeneration();
     player.draw();
 
-
     clickedLastFrame = click;
     frametime = Date.now();
     requestAnimationFrame(main);
-}
-
-function clearBackground(color) {
-    c.fillStyle = color;
-    c.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 document.addEventListener("keydown", function (e) {
