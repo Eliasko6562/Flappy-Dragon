@@ -6,6 +6,8 @@ let click = false;
 let clickedLastFrame = false;
 let pipes = [new Pipe(canvas.width, -5, 1, 1)];
 let frametime = Date.now();
+const pillars = new Image();
+pillars.src = "../images/Pillar.png";
 
 function main() {
     frametime = (Date.now() - frametime) / 1000;
@@ -18,6 +20,7 @@ function main() {
     pipeGeneration();
     player.draw();
 
+
     clickedLastFrame = click;
     frametime = Date.now();
     requestAnimationFrame(main);
@@ -29,13 +32,15 @@ function clearBackground(color) {
 }
 
 document.addEventListener("keydown", function (e) {
-    if (e.code == "KeyW") {
+    if (e.code == "KeyW" || e.code == "Space" || e.code == "ArrowUp") {
         click = true;
     }
 });
 
 document.addEventListener("keyup", function (e) {
-    if (e.code == "KeyW") {
+    if (e.code == "KeyW" || e.code == "Space" || e.code == "ArrowUp"
+        
+    ) {
         click = false;
     }
 });

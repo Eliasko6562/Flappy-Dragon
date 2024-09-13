@@ -5,7 +5,7 @@ class Player {
         this.scale = 50
         this.color = "red"
         this.jumpPower = 700
-        this.gravity = 12
+        this.gravity = 45
         this.yVelocity = 0
         this.speed = 250
     }

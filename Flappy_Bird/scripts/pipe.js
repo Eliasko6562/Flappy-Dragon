@@ -7,7 +7,7 @@ class Pipe {
     }
 
     draw() {
-        drawRelativeToPlayer(this.x, this.y, this.w, this.h, "green");
+        c.drawImage(pillars, this.x - player.x, this.y, this.w, this.h);
     }
 }
 
