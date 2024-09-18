@@ -17,19 +17,10 @@ class Player {
     }
 
     update() {
-        for (let i = 0; i < pipes.length; i += 2) {
-            if (this.x > pipes[i].x + pipes[i].w && !pipes[i].passed) {
-            pipes[i].passed = true;
-            if (i + 1 < pipes.length) {
-                pipes[i + 1].passed = true;
-            }
-            score += 1;
-            }
-        }
-        
         this.input();
         this.applyGravity();
         this.move();
+        this.scoreCounting();
         this.hitbox();
     }
 
@@ -53,16 +44,31 @@ class Player {
         }
     }
 
-    hitbox() {
-        for (let i = 0; i < pipes.length; i++) {
-            if (this.x + this.scale > pipes[i].x && this.x < pipes[i].x + pipes[i].w && this.y + this.scale > pipes[i].y && this.y < pipes[i].y + pipes[i].h) {
-                console.log("hit");
-                gameOver();
+    scoreCounting() {
+        for (let i = 0; i < pipes.length; i += 2) {
+            if (this.x > pipes[i].x + pipes[i].w && !pipes[i].passed) {
+            pipes[i].passed = true;
+            if (i + 1 < pipes.length) {
+                pipes[i + 1].passed = true;
+            }
+            score += 1;
             }
         }
     }
-    
 
+    hitbox() {
+        for (let i = 0; i < pipes.length; i++) {
+            if (
+            this.x < pipes[i].x + pipes[i].w &&
+            this.x + this.scale > pipes[i].x &&
+            this.y < pipes[i].y + pipes[i].h &&
+            this.y + this.scale > pipes[i].y
+            ) {
+            console.log("hit");
+            gameOver();
+            }
+        }
+    }
 
     move() {
         this.x += this.speed * frametime;
@@ -77,8 +83,10 @@ class Player {
             c.drawImage(this.dragonEnd, 100, this.y, this.scale, this.scale);
         }
         Text(10, 20, "white", "20px Arial", "Score: " + score); 
+        c.strokeStyle = "red";
+        c.lineWidth = 2;
+        c.strokeRect(100, this.y, this.scale, this.scale);
     }
-    
 }
 
 function drawRelativeToPlayer(x, y, w, h, color) {
