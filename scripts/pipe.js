@@ -7,7 +7,7 @@ class Pipe {
     }
 
     draw() {
-        c.drawImage(pillars,this.x - player.x, this.y, this.w, this.h);
+        c.drawImage(pillars,this.x - player.x + player.initialX, this.y, this.w, this.h);
     }
 }
 

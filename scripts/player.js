@@ -1,6 +1,7 @@
 class Player {
     constructor() {
-        this.x = 100
+        this.initialX = 100;
+        this.x = this.initialX;
         this.y = 100
         this.scale = 50
         this.jumpPower = 300
@@ -58,11 +59,20 @@ class Player {
 
     hitbox() {
         for (let i = 0; i < pipes.length; i++) {
+            const pipe = pipes[i];
+
             if (
-            this.x < pipes[i].x + pipes[i].w &&
-            this.x + this.scale > pipes[i].x &&
-            this.y < pipes[i].y + pipes[i].h &&
-            this.y + this.scale > pipes[i].y
+                ( // if player is between pipes on x axies
+                    this.x > pipe.x && this.x < pipe.x + pipe.w ||
+                    this.x + this.scale > pipe.x && this.x + this.scale < pipe.x + pipe.w
+                ) && ( // and if player is between pipes on y axis
+                    this.y > pipe.y && this.y < pipe.y + pipe.h ||
+                    this.y + this.scale > pipe.y && this.y + this.scale < pipe.y + pipe.h
+                )
+            // this.x < pipes[i].x + pipes[i].w &&
+            // this.x + this.scale > pipes[i].x &&
+            // this.y < pipes[i].y + pipes[i].h &&
+            // this.y + this.scale > pipes[i].y
             ) {
             console.log("hit");
             gameOver();
@@ -83,25 +93,28 @@ class Player {
             c.drawImage(this.dragonEnd, 100, this.y, this.scale, this.scale);
         }
         Text(10, 20, "white", "20px Arial", "Score: " + score); 
-        c.strokeStyle = "red";
-        c.lineWidth = 2;
-        c.strokeRect(100, this.y, this.scale, this.scale);
     }
 }
 
-function drawRelativeToPlayer(x, y, w, h, color) {
+/*function drawRelativeToPlayer(x, y, w, h, color) {
     c.fillStyle = color;
     c.fillRect(x - player.x + 100, y, w, h);
-}
+}*/
 
 function Text(x, y, color, font, text) {
     c.fillStyle = color;
     c.font = font;
+    c.globalCompositeOperation = "source-over";
     c.fillText(text, x, y);
 }
 
 function gameOver() {
-    
-    location.reload();
-   
+    gameOverFlag = true;
+    c.fillStyle = "black";
+    c.globalAlpha = 0.7;
+    c.fillRect(0, 0, canvas.width, canvas.height);
+
+  
+    Text(200, 200, "red", "50px Arial", "Game Over");
+    c.globalAlpha = 1;
 }

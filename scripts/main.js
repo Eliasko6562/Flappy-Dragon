@@ -10,9 +10,14 @@ let pillars = new Image();
     pillars.src = "../images/Pillar.png";
 let background = new Background();
 let score = 0;
+let gameOverFlag = false;
 
 
 function main() {
+    if (gameOverFlag){
+        return;
+    }
+
     frametime = (Date.now() - frametime) / 1000;
     background.update();
 
