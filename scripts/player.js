@@ -48,11 +48,13 @@ class Player {
     scoreCounting() {
         for (let i = 0; i < pipes.length; i += 2) {
             if (this.x > pipes[i].x + pipes[i].w && !pipes[i].passed) {
-            pipes[i].passed = true;
-            if (i + 1 < pipes.length) {
-                pipes[i + 1].passed = true;
-            }
-            score += 1;
+                if (this.x - this.speed * frametime <= pipes[i].x + pipes[i].w) {
+                    pipes[i].passed = true;
+                    if (i + 1 < pipes.length) {
+                        pipes[i + 1].passed = true;
+                    }
+                    score += 1;
+                }
             }
         }
     }
@@ -66,7 +68,7 @@ class Player {
                     this.x > pipe.x && this.x < pipe.x + pipe.w ||
                     this.x + this.scale  - 10 > pipe.x && this.x + this.scale - 10 < pipe.x + pipe.w
                 ) && ( // and if player is between pipes on y axis
-                    this.y > pipe.y && this.y < pipe.y + pipe.h ||
+                    this.y + 8 > pipe.y && this.y + 8 < pipe.y + pipe.h ||
                     this.y + this.scale > pipe.y && this.y + this.scale < pipe.y + pipe.h
                 )
             // this.x < pipes[i].x + pipes[i].w &&
@@ -92,7 +94,7 @@ class Player {
         } else if (this.yVelocity > -3) {
             c.drawImage(this.dragonEnd, 100, this.y, this.scale, this.scale);
         }
-        Text(10, 20, "white", "20px Arial", "Score: " + score); 
+        Text(20, 35, "white", "20px Comic Sans MS", "Score: " + score); 
     }
 }
 
