@@ -110,13 +110,19 @@ function Text(x, y, color, font, text) {
     c.fillText(text, x, y);
 }
 
+function Text2(x, y, color, font, text) {
+    c2.fillStyle = color;
+    c2.font = font;
+    c2.globalCompositeOperation = "source-over";
+    c2.fillText(text, x, y);
+}
+
 function gameOver() {
     gameOverFlag = true;
-    c.fillStyle = "black";
-    c.globalAlpha = 0.7;
-    c.fillRect(0, 0, canvas.width, canvas.height);
 
+    c2.fillStyle = "black";
+    c2.fillRect(0, 0, canvas.width, canvas.height);
+    
   
-    Text(200, 200, "red", "50px Arial", "Game Over");
-    c.globalAlpha = 1;
+    Text2(200, 200, "red", "50px Arial", "Game Over");
 }

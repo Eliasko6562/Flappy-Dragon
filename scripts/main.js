@@ -1,6 +1,9 @@
 const canvas = document.getElementById("canvas");
 const c = canvas.getContext("2d");
 
+const canvas2 = document.getElementById("canvas2");
+const c2 = canvas.getContext("2d");
+
 let player = new Player();
 let click = false;
 let clickedLastFrame = false;
