@@ -66,7 +66,7 @@ class Player {
             if (
                 ( // if player is between pipes on x axies
                     this.x > pipe.x && this.x < pipe.x + pipe.w ||
-                    this.x + this.scale  - 10 > pipe.x && this.x + this.scale - 10 < pipe.x + pipe.w
+                    this.x + this.scale - 10 > pipe.x && this.x + this.scale - 10 < pipe.x + pipe.w
                 ) && ( // and if player is between pipes on y axis
                     this.y + 8 > pipe.y && this.y + 8 < pipe.y + pipe.h ||
                     this.y + this.scale > pipe.y && this.y + this.scale < pipe.y + pipe.h
