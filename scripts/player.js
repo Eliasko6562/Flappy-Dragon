@@ -65,8 +65,8 @@ class Player {
 
             if (
                 ( // if player is between pipes on x axies
-                    this.x > pipe.x && this.x < pipe.x + pipe.w ||
-                    this.x + this.scale - 10 > pipe.x && this.x + this.scale - 10 < pipe.x + pipe.w
+                    this.x + 15 > pipe.x && this.x + 15 < pipe.x + pipe.w ||
+                    this.x + this.scale - 15 > pipe.x && this.x + this.scale - 15 < pipe.x + pipe.w
                 ) && ( // and if player is between pipes on y axis
                     this.y + 8 > pipe.y && this.y + 8 < pipe.y + pipe.h ||
                     this.y + this.scale > pipe.y && this.y + this.scale < pipe.y + pipe.h
@@ -76,8 +76,20 @@ class Player {
             // this.y < pipes[i].y + pipes[i].h &&
             // this.y + this.scale > pipes[i].y
             ) {
-            console.log("hit");
-            gameOver();
+                gameOverFlag = true;
+
+                let j = 0
+                for (j = 0; j < pipes.length;) {
+                    if (j == i) {
+                        j++;
+                        continue;
+                    }
+
+                    pipes.splice(j, 1);
+                    i--;
+                }
+                console.log(i, j);
+                break
             }
         }
     }
@@ -94,7 +106,7 @@ class Player {
         } else if (this.yVelocity > -3) {
             c.drawImage(this.dragonEnd, 100, this.y, this.scale, this.scale);
         }
-        Text(20, 35, "white", "20px Comic Sans MS", "Score: " + score); 
+        text(20, 35, "white", "20px Comic Sans MS", "Score: " + score); 
     }
 }
 
@@ -103,26 +115,16 @@ class Player {
     c.fillRect(x - player.x + 100, y, w, h);
 }*/
 
-function Text(x, y, color, font, text) {
+function text(x, y, color, font, text) {
     c.fillStyle = color;
     c.font = font;
-    c.globalCompositeOperation = "source-over";
     c.fillText(text, x, y);
 }
 
-function Text2(x, y, color, font, text) {
-    c2.fillStyle = color;
-    c2.font = font;
-    c2.globalCompositeOperation = "source-over";
-    c2.fillText(text, x, y);
-}
-
 function gameOver() {
-    gameOverFlag = true;
-
-    c2.fillStyle = "black";
-    c2.fillRect(0, 0, canvas.width, canvas.height);
-    
-  
-    Text2(200, 200, "red", "50px Arial", "Game Over");
+    c.fillStyle = "black";
+    c.fillRect(0, 0, canvas.width, canvas.height);
+    pipes[0].draw();
+    player.draw();
+    text(200, 200, "red", "50px Arial", "Game Over");
 }

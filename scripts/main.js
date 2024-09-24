@@ -1,9 +1,6 @@
 const canvas = document.getElementById("canvas");
 const c = canvas.getContext("2d");
 
-const canvas2 = document.getElementById("canvas2");
-const c2 = canvas.getContext("2d");
-
 let player = new Player();
 let click = false;
 let clickedLastFrame = false;
@@ -18,6 +15,8 @@ let gameOverFlag = false;
 
 function main() {
     if (gameOverFlag){
+        gameOver();
+        
         return;
     }
 
@@ -28,7 +27,9 @@ function main() {
     for (let i = 0; i < pipes.length; i++) {
         pipes[i].draw();
     }
-    pipeGeneration();
+    if (!gameOverFlag) {
+        pipeGeneration();
+    }
     player.draw();
    
   
