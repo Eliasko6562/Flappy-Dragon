@@ -77,18 +77,9 @@ class Player {
             // this.y + this.scale > pipes[i].y
             ) {
                 gameOverFlag = true;
-
-                let j = 0
-                for (j = 0; j < pipes.length;) {
-                    if (j == i) {
-                        j++;
-                        continue;
-                    }
-
-                    pipes.splice(j, 1);
-                    i--;
-                }
-                console.log(i, j);
+                highScore = Math.max(score, highScore);
+                window.localStorage.setItem("highScore", highScore);
+                pipes = [pipes[i]];
                 break
             }
         }
@@ -107,6 +98,7 @@ class Player {
             c.drawImage(this.dragonEnd, 100, this.y, this.scale, this.scale);
         }
         text(20, 35, "white", "20px Comic Sans MS", "Score: " + score); 
+        text(20, 60, "white", "20px Comic Sans MS", "Best: " + highScore);
     }
 }
 

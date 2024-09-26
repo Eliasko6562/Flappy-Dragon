@@ -10,6 +10,10 @@ let pillars = new Image();
     pillars.src = "../images/Pillar.png";
 let background = new Background();
 let score = 0;
+let highScore = window.localStorage.getItem("highScore");
+if (highScore == null) {
+    highScore = 0;
+}
 let gameOverFlag = false;
 
 
