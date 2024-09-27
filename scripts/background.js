@@ -1,7 +1,7 @@
 class Background{
     constructor(){
         this.background = new Image();
-        this.background.src = "../images/Background.jpg";
+        this.background.src = "./images/Background.jpg";
         this.x = 0;
         this.speed = 150;
 

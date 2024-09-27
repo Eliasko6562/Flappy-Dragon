@@ -10,11 +10,11 @@ class Player {
         this.speed = 250
 
         this.dragonStart = new Image();
-        this.dragonStart.src = "../images/dragonStart.png";
+        this.dragonStart.src = "./images/dragonStart.png";
         this.dragonEnd = new Image();
-        this.dragonEnd.src = "../images/dragonEnd.png";
+        this.dragonEnd.src = "./images/dragonEnd.png";
         this.dragonMid = new Image();
-        this.dragonMid.src = "../images/dragonMid.png";
+        this.dragonMid.src = "./images/dragonMid.png";
     }
 
     update() {
