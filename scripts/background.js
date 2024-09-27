@@ -11,7 +11,6 @@ class Background{
         this.move();
         this.draw();
     }
-
     move(){
         this.x -= this.speed * frametime;
     }
