@@ -57,4 +57,12 @@ document.addEventListener("keyup", function (e) {
     }
 });
 
+document.addEventListener("touchstart", function (e) {
+    click = true;
+});
+
+document.addEventListener("touchend", function (e) {
+    click = false;
+});
+
 main();
