@@ -118,5 +118,5 @@ function gameOver() {
     c.fillRect(0, 0, canvas.width, canvas.height);
     pipes[0].draw();
     player.draw();
-    text(200, 200, "red", "50px Arial", "Game Over");
+    text(250, 200, "red", "50px Arial", "Game Over");
 }
