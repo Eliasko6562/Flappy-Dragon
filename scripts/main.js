@@ -1,6 +1,11 @@
 const canvas = document.getElementById("canvas");
 const c = canvas.getContext("2d");
 
+let whoosh = new Audio();
+    whoosh.src = "./sounds/Whooosh.mp3";
+let descend = new Audio();
+    descend.src = "./sounds/fchuuu.mp3";
+
 let player = new Player();
 let click = false;
 let clickedLastFrame = false;
@@ -34,6 +39,7 @@ function main() {
     if (!gameOverFlag) {
         pipeGeneration();
     }
+    liveScore();
     player.draw();
    
   
@@ -43,9 +49,23 @@ function main() {
     requestAnimationFrame(main);
 }
 
+function liveScore () {
+    text(20, 35, "white", "20px Comic Sans MS", "Score: " + score); 
+    text(20, 60, "white", "20px Comic Sans MS", "Best: " + highScore);
+}
+  
+// PC controls
+
 document.addEventListener("keydown", function (e) {
-    if (e.code == "KeyW" || e.code == "Space" || e.code == "ArrowUp") {
+    if ((e.code == "KeyW" || e.code == "Space" || e.code == "ArrowUp") && !gameOverFlag) {
         click = true;
+        whoosh.pause();
+        whoosh.currentTime = 0;
+        whoosh.play();
+
+    }
+    if (e.code == "KeyR" && gameOverFlag) {
+        location.reload();
     }
 });
 
@@ -56,6 +76,10 @@ document.addEventListener("keyup", function (e) {
         click = false;
     }
 });
+
+
+
+// Mobile touch controls
 
 document.addEventListener("touchstart", function (e) {
     click = true;

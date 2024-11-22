@@ -97,8 +97,6 @@ class Player {
         } else if (this.yVelocity > -3) {
             c.drawImage(this.dragonEnd, 100, this.y, this.scale, this.scale);
         }
-        text(20, 35, "white", "20px Comic Sans MS", "Score: " + score); 
-        text(20, 60, "white", "20px Comic Sans MS", "Best: " + highScore);
     }
 }
 
@@ -113,10 +111,21 @@ function text(x, y, color, font, text) {
     c.fillText(text, x, y);
 }
 
+function textCenter(x, y, color, font, text) {
+    c.fillStyle = color;
+    c.font = font;
+    c.fillText(text, x - (c.measureText(text).width / 2), y);
+}
+
 function gameOver() {
+    const centerX = canvas.width / 2;
     c.fillStyle = "black";
     c.fillRect(0, 0, canvas.width, canvas.height);
     pipes[0].draw();
     player.draw();
-    text(250, 200, "red", "50px Arial", "Game Over");
+    textCenter(centerX, 200, "red", "50px Arial", "Game Over");
+    textCenter(centerX, 250, "red", "25px Arial", "Score: " + score);
+    textCenter(centerX, 300, "red", "25px Arial", "Best: " + highScore);
+    textCenter(centerX, 350, "red", "25px Arial", "Press 'r' to restart");
 }
+
