@@ -5,6 +5,11 @@ let whoosh = new Audio();
     whoosh.src = "./sounds/Whooosh.mp3";
 let descend = new Audio();
     descend.src = "./sounds/fchuuu.mp3";
+let music = new Audio();
+    music.src = "./sounds/music.mp3";
+
+
+
 
 let player = new Player();
 let click = false;
@@ -39,6 +44,7 @@ function main() {
     if (!gameOverFlag) {
         pipeGeneration();
     }
+    music.play();
     liveScore();
     player.draw();
    
