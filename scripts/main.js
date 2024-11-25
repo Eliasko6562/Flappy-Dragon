@@ -7,9 +7,8 @@ let descend = new Audio();
     descend.src = "./sounds/fchuuu.mp3";
 let music = new Audio();
     music.src = "./sounds/music.mp3";
-
-
-
+let hit = new Audio();
+    hit.src = "./sounds/AAAHHHHHH.mp3";
 
 let player = new Player();
 let click = false;
@@ -26,9 +25,13 @@ if (highScore == null) {
 }
 let gameOverFlag = false;
 
+music.loop = true;
+music.play();
 
 function main() {
     if (gameOverFlag){
+        music.pause();
+        hit.play();
         gameOver();
         
         return;
@@ -44,7 +47,6 @@ function main() {
     if (!gameOverFlag) {
         pipeGeneration();
     }
-    music.play();
     liveScore();
     player.draw();
    
@@ -59,9 +61,26 @@ function liveScore () {
     text(20, 35, "white", "20px Comic Sans MS", "Score: " + score); 
     text(20, 60, "white", "20px Comic Sans MS", "Best: " + highScore);
 }
-  
-// PC controls
 
+document.getElementById("musicButton").addEventListener("click", function() {
+    if (music.paused) {
+        music.play();
+    } else {
+        music.pause();
+    }
+});
+
+document.getElementById("sfxButton").addEventListener("click", function() {
+    if (whoosh.muted) {
+        whoosh.muted = false;
+        hit.muted = false;
+    } else {
+        whoosh.muted = true;
+        hit.muted = true;
+    }
+});
+
+// PC controls
 document.addEventListener("keydown", function (e) {
     if ((e.code == "KeyW" || e.code == "Space" || e.code == "ArrowUp") && !gameOverFlag) {
         click = true;
@@ -83,10 +102,7 @@ document.addEventListener("keyup", function (e) {
     }
 });
 
-
-
 // Mobile touch controls
-
 document.addEventListener("touchstart", function (e) {
     click = true;
 });
