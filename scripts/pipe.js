@@ -21,7 +21,7 @@ function pipeGeneration() {
 }
 
 function genPipe() {
-    let num = Math.floor(Math.random() * (canvas.height - 400));
-    pipes.push(new Pipe(pipes[pipes.length - 1].x + 300, - (canvas.height - 200 - num) + 100, 75, canvas.height - 200));
-    pipes.push(new Pipe(pipes[pipes.length - 1].x, num + 300, 75, canvas.height - 200));
+    let num = Math.floor(Math.random() * (canvas.height - 300));
+    pipes.push(new Pipe(pipes[pipes.length - 1].x + 300, - (canvas.height - 200 - num) + 50, 75, canvas.height - 200));
+    pipes.push(new Pipe(pipes[pipes.length - 1].x, num + 250, 75, canvas.height - 200));
 }
