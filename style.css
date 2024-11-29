@@ -21,3 +21,11 @@ button{
 h1{
     font-family: Comic Sans MS;
 }
+
+#sfxButton{
+    margin-top: 10px;
+    background: url('./images/Button.png');
+    width: 89px;
+    height: 34px;
+    border: none;
+}
