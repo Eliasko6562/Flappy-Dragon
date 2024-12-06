@@ -5,21 +5,14 @@ canvas{
 }
 
 body{
-    background-color: rgb(0, 0, 0);
-    color: white;
-    font-family: 'Arial', sans-serif;
+    background-color: black;
     text-align: center;
-    
-    
-}
-
-button{
-    margin-top: 10px;
-    font-size: 20px;
 }
 
 h1{
     font-family: Comic Sans MS;
+    color: darkslateblue;
+    font-size: 3em;
 }
 
 #sfxButton{

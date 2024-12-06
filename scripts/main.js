@@ -58,8 +58,8 @@ function main() {
 }
 
 function liveScore () {
-    text(20, 35, "white", "20px Comic Sans MS", "Score: " + score); 
-    text(20, 60, "white", "20px Comic Sans MS", "Best: " + highScore);
+    text(20, 35, "DarkSlateBlue", "25px Comic Sans MS", "Score: " + score); 
+    text(20, 65, "DarkSlateBlue", "25px Comic Sans MS", "Best: " + highScore);
 }
 
 // Retrieve mute settings from localStorage
@@ -101,20 +101,23 @@ document.addEventListener("keydown", function (e) {
 });
 
 document.addEventListener("keyup", function (e) {
-    if (e.code == "KeyW" || e.code == "Space" || e.code == "ArrowUp"
-        
-    ) {
+    if (e.code == "KeyW" || e.code == "Space" || e.code == "ArrowUp") {
         click = false;
     }
 });
 
 // Mobile touch controls
 document.addEventListener("touchstart", function (e) {
-    click = true;
+    if (!e.target.classList.contains('sfx-button') && !e.target.classList.contains('music-button')) {
+        click = true;
+    }
 });
 
 document.addEventListener("touchend", function (e) {
-    click = false;
+    if (!e.target.classList.contains('sfx-button') && !e.target.classList.contains('music-button')) {
+        click = false;
+    }
 });
+
 
 main();
