@@ -62,8 +62,19 @@ function liveScore () {
     text(20, 60, "white", "20px Comic Sans MS", "Best: " + highScore);
 }
 
+// Retrieve mute settings from localStorage
+let isMusicMuted = window.localStorage.getItem("isMusicMuted") === "true";
+let isSfxMuted = window.localStorage.getItem("isSfxMuted") === "true";
+
+// Apply mute settings
+music.muted = isMusicMuted;
+whoosh.muted = isSfxMuted;
+hit.muted = isSfxMuted;
+
 document.getElementById("musicButton").addEventListener("click", function() {
-    if (music.paused) {
+    music.muted = !music.muted;
+    window.localStorage.setItem("isMusicMuted", music.muted);
+    if (!music.muted) {
         music.play();
     } else {
         music.pause();
@@ -71,13 +82,9 @@ document.getElementById("musicButton").addEventListener("click", function() {
 });
 
 document.getElementById("sfxButton").addEventListener("click", function() {
-    if (whoosh.muted) {
-        whoosh.muted = false;
-        hit.muted = false;
-    } else {
-        whoosh.muted = true;
-        hit.muted = true;
-    }
+    whoosh.muted = !whoosh.muted;
+    hit.muted = !hit.muted;
+    window.localStorage.setItem("isSfxMuted", whoosh.muted);
 });
 
 // PC controls
@@ -87,7 +94,6 @@ document.addEventListener("keydown", function (e) {
         whoosh.pause();
         whoosh.currentTime = 0;
         whoosh.play();
-
     }
     if (e.code == "KeyR" && gameOverFlag) {
         location.reload();
