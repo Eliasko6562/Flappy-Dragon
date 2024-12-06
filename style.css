@@ -24,8 +24,24 @@ h1{
 
 #sfxButton{
     margin-top: 10px;
-    background: url('./images/Button.png');
+    background: url('./images/sfx.png');
     width: 89px;
     height: 34px;
     border: none;
+}
+
+#musicButton{
+    margin-top: 10px;
+    background: url('./images/music.png');
+    width: 89px;
+    height: 34px;
+    border: none;
+}
+
+#sfxButton:hover, #musicButton:hover{
+    filter: brightness(0.8);
+}
+
+#sfxButton:active, #musicButton:active{
+    filter: brightness(0.6);
 }
