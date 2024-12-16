@@ -25,3 +25,4 @@ function genPipe() {
     pipes.push(new Pipe(pipes[pipes.length - 1].x + 300, - (canvas.height - 200 - num) + 50, 75, canvas.height - 200));
     pipes.push(new Pipe(pipes[pipes.length - 1].x, num + 250, 75, canvas.height - 200));
 }
+
