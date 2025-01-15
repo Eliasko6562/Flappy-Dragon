@@ -21,6 +21,7 @@ h1{
     width: 89px;
     height: 34px;
     border: none;
+    outline: none;
 }
 
 #musicButton{
@@ -29,6 +30,7 @@ h1{
     width: 89px;
     height: 34px;
     border: none;
+    outline: none;
 }
 
 #sfxButton:hover, #musicButton:hover{
