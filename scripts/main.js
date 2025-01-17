@@ -1,6 +1,7 @@
 const canvas = document.getElementById("canvas");
 const c = canvas.getContext("2d");
 
+
 let whoosh = new Audio();
     whoosh.src = "./sounds/Whooosh.mp3";
 let descend = new Audio();
@@ -11,18 +12,23 @@ let hit = new Audio();
     hit.src = "./sounds/AAAHHHHHH.mp3";
 
 let player = new Player();
+
 let click = false;
 let clickedLastFrame = false;
-let pipes = [new Pipe(canvas.width, -5, 1, 1)];
 let frametime = Date.now();
+
+let pipes = [new Pipe(canvas.width, -5, 1, 1)];
+
 let pillars = new Image();
     pillars.src = "./images/Pillar.png";
 let background = new Background();
+
 let score = 0;
 let highScore = window.localStorage.getItem("highScore");
 if (highScore == null) {
     highScore = 0;
 }
+
 let gameOverFlag = false;
 
 music.loop = true;
@@ -118,6 +124,5 @@ document.addEventListener("touchend", function (e) {
         click = false;
     }
 });
-
 
 main();

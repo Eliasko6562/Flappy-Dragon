@@ -128,4 +128,3 @@ function gameOver() {
     textCenter(centerX, 300, "red", "25px Arial", "Best: " + highScore);
     textCenter(centerX, 350, "red", "25px Arial", "Press 'r' to restart");
 }
-
