@@ -2,10 +2,6 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-const Database = require('better-sqlite3');
-const db = new Database('messages.db', { verbose: console.log });
-
-
 const bodyParser = require('body-parser');
 const messages = [];
 
@@ -23,37 +19,9 @@ const storage = require('./storage/sqliteStorage'); // SQLite storage
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-// Vytvoření tabulky v databázi
-db.exec(`
-    CREATE TABLE IF NOT EXISTS messages (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT NOT NULL,
-        message TEXT NOT NULL,
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-        ip TEXT
-    )
-`);
-
-// Načítání zpráv z databáze
-function getMessages() {
-    return db.prepare("SELECT * FROM messages ORDER BY timestamp DESC").all();
-}
-
-function addMessage(username, avatar, email, message, ip) {
-    try {
-        db.prepare(`
-            INSERT INTO messages (username, avatar, email, message, timestamp, ip)
-            VALUES (?, ?, CURRENT_TIMESTAMP, ?)
-        `).run(username, message, ip);
-        console.log("✅ Zpráva uložena do SQLite");
-    } catch (error) {
-        console.error("❌ Chyba při ukládání do SQLite:", error);
-    }
-}
-
 // Domovská stránka
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
+    res.sendFile(__dirname + './public/index.html');
 });
 
 //Nacitani zprav
@@ -113,15 +81,6 @@ app.post('/send', (req, res) => {
     res.redirect('/');
 });
 
-
-// Uložení zprávy do SQLite databáze
-function addMessage(username, message, ip) {
-    db.prepare(`
-        INSERT INTO messages (username, message, timestamp, ip)
-        VALUES (?, ?, CURRENT_TIMESTAMP, ?)
-    `).run(username, message, ip);
-}
-
 // Uložení zprávy do JSON souboru 
 /*
 function addMessage(username, message, ip) {
@@ -132,7 +91,6 @@ function addMessage(username, message, ip) {
 */
 
 // Zobrazeni zpráv
-
 async function loadMessages() {
     const response = await fetch('/messages');  // Pošle požadavek na server
     const messages = await response.json();    // Přijme a převede odpověď na JSON
@@ -144,4 +102,3 @@ async function loadMessages() {
     ).join('');
 }
 setInterval(loadMessages, 5000);  // Aktualizace každých 5 sekund
-
