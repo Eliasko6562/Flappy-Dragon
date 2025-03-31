@@ -1,8 +1,5 @@
-module.exports = { getMessages, addMessage };
-
 const Database = require('better-sqlite3');
 const db = new Database('messages.db', { verbose: console.log });
-
 
 // Vytvoření tabulky v databázi
 db.exec(`
@@ -32,3 +29,5 @@ function addMessage(username, message, ip) {
         console.error("❌ Chyba při ukládání do SQLite:", error);
     }
 }
+
+module.exports = { getMessages, addMessage };
