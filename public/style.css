@@ -1,0 +1,73 @@
+canvas{
+    border: 5px solid rgb(56, 56, 56);
+    display: block;
+    margin: 0 auto;
+}
+
+body{
+    background-color: black;
+    text-align: center;
+    color: darkslateblue;
+}
+
+h1{
+    font-family: Comic Sans MS;
+    color: darkslateblue;
+    font-size: 3em;
+}
+
+#leaderboard {
+    position: absolute;
+    left: 8%;
+    top: 45%;
+    transform: translateY(-50%);
+    background: rgba(30, 30, 30, 0.95);
+    padding: 32px 28px;
+    border-radius: 16px;
+    color: darkslateblue;
+    min-width: 300px;
+    text-align: left;
+    box-shadow: 4px 4px 20px rgba(0,0,0,0.7);
+    border: 3px solid darkslateblue;
+    font-size: 1.15em;
+    font-family: Comic Sans MS;
+    letter-spacing: 0.5px;
+}
+
+th{
+    text-align: center;
+    font-family: Comic Sans MS;
+    color: darkslateblue;
+    font-size: 1.2em;
+    border: none;
+}
+
+tbody{
+    text-align: center;
+}
+
+#sfxButton{
+    margin-top: 10px;
+    background: url('./images/sfx.png');
+    width: 89px;
+    height: 34px;
+    border: none;
+    outline: none;
+}
+
+#musicButton{
+    margin-top: 10px;
+    background: url('./images/music.png');
+    width: 89px;
+    height: 34px;
+    border: none;
+    outline: none;
+}
+
+#sfxButton:hover, #musicButton:hover{
+    filter: brightness(0.8);
+}
+
+#sfxButton:active, #musicButton:active{
+    filter: brightness(0.6);
+}
