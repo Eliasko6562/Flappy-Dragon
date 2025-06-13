@@ -1,12 +1,6 @@
 const canvas = document.getElementById("canvas");
 const c = canvas.getContext("2d");
 
-// Private url for the API: http://dreamlo.com/lb/fu3D0eAnwk657ekqOwXvUgh25OcucD70OCw0pJ82zOww
-const PUBLIC_KEY = "68371aaf8f40bb1514479821";
-const PRIVATE_KEY = "fu3D0eAnwk657ekqOwXvUgh25OcucD70OCw0pJ82zOww";
-const USE_HTTPS = true;
-
-
 let whoosh = new Audio();
     whoosh.src = "./sounds/Whooosh.mp3";
 let descend = new Audio();
@@ -36,51 +30,16 @@ if (highScore == null) {
 
 let gameOverFlag = false;
 
+let scoreSubmitted = false;
+
 music.loop = true;
 music.play();
  
-
-
-function updateTopScore() {
-    dreamlo.initialize(PUBLIC_KEY, PRIVATE_KEY, USE_HTTPS);
-
-    const skip = 0;
-    const take = 1;
-    dreamlo.getScores(dreamlo.ScoreFormat.Object, dreamlo.SortOrder.PointsDescending, skip, take)
-        .then((scores) => {
-            const topScore = scores[0];
-            let text = "";
-            if (topScore) {
-                text = topScore.score;
-            }
-            else {
-                text = "No scores yet!";
-            }
-            $("#topScore").text("T0P: " + text);
-        })
-        .catch((error) => {
-            alert(error);
-        });
-}
-
-async function uploadScore() {
-        const scores = await addScoreToLeaderboard(name);
-        goToLeaderboard(scores, name);
-
-        updateTopScore();
-    };
-    $("#viewLeaderboard").click(async function () {
-        const scores = await getScores();
-        goToLeaderboard(scores);
-    });
-
-
 function main() {
     if (gameOverFlag){
         music.pause();
         hit.play();
         gameOver();
-        uploadScore();
         return;
     }
 
@@ -98,23 +57,10 @@ function main() {
     player.draw();
    
   
-
     clickedLastFrame = click;
     frametime = Date.now();
     requestAnimationFrame(main);
 }
-
-function gameStart() {
-    $("#menu").fadeOut(300);
-    $("#canvas").fadeIn(1000);
-    pipes = [new Pipe(canvas.width, -5, 1, 1)];
-    player = new Player();
-    score = 0;
-    gameOverFlag = false;
-    music.play();
-    main();
-}
-
 
 function liveScore () {
     text(370, 35, "DarkSlateBlue", "30px Comic Sans MS", score); 
@@ -196,5 +142,36 @@ if (window.localStorage.getItem("playerName") === null) {
 } else {
     frametime = Date.now();
     main();
+    fetchLeaderboard();
+}
+
+function resetGame() {
+    score = 0;
+    gameOverFlag = false;
+    pipes = [new Pipe(canvas.width, -5, 1, 1)];
+    player.x = player.initialX;
+    player.y = 100;
+    // start the game loop again
+    frametime = Date.now();
+    main();
+}
+
+function fetchLeaderboard() {
+    fetch("https://flappy-dragon.eliascomastantine.workers.dev/leaderboard")
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.querySelector("#leaderboard tbody");
+            tbody.innerHTML = "";
+            data.forEach((entry, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${entry.username}</td>
+                    <td>${entry.score}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => console.error("Leaderboard fetch error:", err));
 }
 

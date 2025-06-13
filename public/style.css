@@ -17,10 +17,7 @@ h1{
 }
 
 #leaderboard {
-    position: absolute;
-    left: 8%;
-    top: 45%;
-    transform: translateY(-50%);
+    /* Remove position, left, top, transform */
     background: rgba(30, 30, 30, 0.95);
     padding: 32px 28px;
     border-radius: 16px;
@@ -32,6 +29,27 @@ h1{
     font-size: 1.15em;
     font-family: Comic Sans MS;
     letter-spacing: 0.5px;
+    height: fit-content;  /* avoid full height stretch */
+}
+
+#leaderboard tbody {
+    display: block;
+    max-height: 400px; /* or whatever fits your layout */
+    overflow-y: auto;
+
+}
+
+#leaderboard table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#leaderboard thead, #leaderboard tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    min-width: 240px; /* ensure the table is wide enough */
+    max-width: 360px; /* limit the width to prevent overflow */
 }
 
 th{

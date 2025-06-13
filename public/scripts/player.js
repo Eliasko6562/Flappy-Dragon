@@ -127,9 +127,26 @@ function gameOver() {
     textCenter(centerX, 250, "red", "25px Arial", "Score: " + score);
     textCenter(centerX, 300, "red", "25px Arial", "Best: " + highScore);
     textCenter(centerX, 350, "red", "25px Arial", "Press 'r' to restart");
+
+    if (!scoreSubmitted) {
+        scoreSubmitted = true;
+        const playerName = window.localStorage.getItem("playerName") || "Anonymous";
+
+        if (score <= 1000) { // Anti-cheat max score
+            fetch("https://flappy-dragon.eliascomastantine.workers.dev/submit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username: playerName, score: score })
+            })
+            .then(() => {
+                console.log("Score submitted.");
+                fetchLeaderboard();
+            })
+            .catch(err => console.error("Failed to submit score:", err));
+        } else {
+            console.warn("Score too high, not submitting.");
+        }
+    }
 }
 
-function resetGame() {
-    location.reload();
-}
 
