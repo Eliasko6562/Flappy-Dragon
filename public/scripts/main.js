@@ -29,13 +29,12 @@ if (highScore == null) {
 }
 
 let gameOverFlag = false;
-
 let scoreSubmitted = false;
 
 music.loop = true;
-music.play();
  
 function main() {
+    
     if (gameOverFlag){
         music.pause();
         hit.play();
@@ -75,6 +74,90 @@ let isSfxMuted = window.localStorage.getItem("isSfxMuted") === "true";
 music.muted = isMusicMuted;
 whoosh.muted = isSfxMuted;
 hit.muted = isSfxMuted;
+
+const savedName = window.localStorage.getItem("playerName");
+
+if (!savedName) {
+    const modalEl = document.getElementById('modal');
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+
+    const nameInput = document.getElementById("playerName");
+    const confirmButton = document.getElementById("changeName");
+
+    // Autofocus when modal opens
+    modalEl.addEventListener('shown.bs.modal', () => {
+        nameInput.focus();
+    });
+
+    // Submit name via Enter key
+    nameInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            confirmButton.click();
+        }
+    });
+
+    confirmButton.addEventListener("click", () => {
+        const name = nameInput.value.trim();
+        if (name !== "") {
+            window.localStorage.setItem("playerName", name);
+            modal.hide();
+            startGame();
+        } else {
+            alert("Please enter a valid name.");
+        }
+    });
+} else {
+    startGame();
+}
+
+function startGame() {
+    frametime = Date.now();
+    music.loop = true;
+
+    // Only play after interaction
+    if (!music.muted) {
+        music.play().catch(err => {
+            console.warn("Music play blocked:", err);
+        });
+    }
+
+    main();
+    fetchLeaderboard();
+}
+
+function resetGame() {
+    score = 0;
+    gameOverFlag = false;
+    scoreSubmitted = false;
+    player = new Player();
+    
+    pipes = [new Pipe(canvas.width, -5, 1, 1)];
+    player.x = player.initialX;
+    player.y = 100;
+    // start the game loop again
+    frametime = Date.now();
+    main();
+}
+
+function fetchLeaderboard() {
+    fetch("https://flappy-dragon.eliascomastantine.workers.dev/leaderboard")
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.querySelector("#leaderboard tbody");
+            tbody.innerHTML = "";
+            data.forEach((entry, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${entry.username}</td>
+                    <td>${entry.score}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => console.error("Leaderboard fetch error:", err));
+}
 
 document.getElementById("musicButton").addEventListener("click", function() {
     music.muted = !music.muted;
@@ -123,55 +206,3 @@ document.addEventListener("touchend", function (e) {
         click = false;
     }
 });
-
-if (window.localStorage.getItem("playerName") === null) {
-    const modal = new bootstrap.Modal(document.getElementById('modal'));
-    modal.show();
-
-    document.getElementById("changeName").addEventListener("click", function () {
-        const nameInput = document.getElementById("playerName").value;
-        if (nameInput.trim() !== "") {
-            window.localStorage.setItem("playerName", nameInput);
-            modal.hide();
-            frametime = Date.now();
-            main();
-        } else {
-            alert("Please enter a valid name.");
-        }
-    });    
-} else {
-    frametime = Date.now();
-    main();
-    fetchLeaderboard();
-}
-
-function resetGame() {
-    score = 0;
-    gameOverFlag = false;
-    pipes = [new Pipe(canvas.width, -5, 1, 1)];
-    player.x = player.initialX;
-    player.y = 100;
-    // start the game loop again
-    frametime = Date.now();
-    main();
-}
-
-function fetchLeaderboard() {
-    fetch("https://flappy-dragon.eliascomastantine.workers.dev/leaderboard")
-        .then(res => res.json())
-        .then(data => {
-            const tbody = document.querySelector("#leaderboard tbody");
-            tbody.innerHTML = "";
-            data.forEach((entry, index) => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${entry.username}</td>
-                    <td>${entry.score}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        })
-        .catch(err => console.error("Leaderboard fetch error:", err));
-}
-

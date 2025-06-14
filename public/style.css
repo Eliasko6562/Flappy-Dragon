@@ -50,6 +50,7 @@ h1{
     table-layout: fixed;
     min-width: 240px; /* ensure the table is wide enough */
     max-width: 360px; /* limit the width to prevent overflow */
+    color: darkslateblue;
 }
 
 th{

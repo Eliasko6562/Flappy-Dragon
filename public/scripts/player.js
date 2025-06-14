@@ -130,7 +130,7 @@ function gameOver() {
 
     if (!scoreSubmitted) {
         scoreSubmitted = true;
-        const playerName = window.localStorage.getItem("playerName") || "Anonymous";
+        const playerName = window.localStorage.getItem("playerName");
 
         if (score <= 1000) { // Anti-cheat max score
             fetch("https://flappy-dragon.eliascomastantine.workers.dev/submit", {
