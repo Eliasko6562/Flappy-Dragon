@@ -38,6 +38,10 @@ if (highScore == null) {
 }
 
 let gameOverFlag = false;
+
+let lastScoreSubmitTime = 0;
+const SCORE_SUBMIT_INTERVAL = 30 * 1000; // 30 seconds
+
 let scoreSubmitted = false;
 
 music.loop = true;
@@ -130,7 +134,7 @@ async function requestToken() {
     if (!resp.ok) throw new Error("Failed to get token");
     const data = await resp.json();
     window.localStorage.setItem("playerToken", data.token);
-    console.log("Player token obtained:", data.token);
+    console.log("Player token obtained.");
   } catch (err) {
     console.error("Error requesting player token:", err);
   }
