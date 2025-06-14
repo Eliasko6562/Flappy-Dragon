@@ -48,7 +48,6 @@ h1{
 #leaderboard colgroup col.col-score {
     width: 90px;
 }
-/* Add more col selectors as needed for more columns */
 
 #leaderboard tbody {
     display: block;
@@ -75,6 +74,7 @@ h1{
     table-layout: fixed;
     color: darkslateblue;
 }
+
 th{
     text-align: center;
     font-family: Comic Sans MS;

@@ -117,6 +117,13 @@ function textCenter(x, y, color, font, text) {
     c.fillText(text, x - (c.measureText(text).width / 2), y);
 }
 
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 function gameOver() {
     const centerX = canvas.width / 2;
     c.fillStyle = "black";
@@ -127,24 +134,36 @@ function gameOver() {
     textCenter(centerX, 250, "red", "25px Arial", "Score: " + score);
     textCenter(centerX, 300, "red", "25px Arial", "Best: " + highScore);
     textCenter(centerX, 350, "red", "25px Arial", "Press 'r' to restart");
-
-    if (!scoreSubmitted) {
-        scoreSubmitted = true;
-        const playerName = window.localStorage.getItem("playerName");
-
-        if (score <= 1000) { // Anti-cheat max score
-            fetch("https://flappy-dragon.eliascomastantine.workers.dev/submit", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username: playerName, score: score })
-            })
-            .then(() => {
-                console.log("Score submitted.");
-                fetchLeaderboard();
-            })
-            .catch(err => console.error("Failed to submit score:", err));
-        } else {
-            console.warn("Score too high, not submitting.");
-        }
-    }
+    submitScore(score);
 }
+
+async function submitScore(score) {
+  if (!scoreSubmitted) {
+    scoreSubmitted = true;
+    const playerName = window.localStorage.getItem("playerName");
+
+    if (score <= 1000) { // Anti-cheat max score
+
+      // Use the same secret as in your worker
+      const SECRET = 'your-super-secret-key'; // **Try to keep this secret!**
+
+      // Generate hash for server verification
+      const hash = await sha256(playerName + ':' + score + ':' + SECRET);
+
+      fetch("https://flappy-dragon.eliascomastantine.workers.dev/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: playerName, score: score, hash: hash })
+      })
+      .then(() => {
+        console.log("Score submitted.");
+        fetchLeaderboard();
+      })
+      .catch(err => console.error("Failed to submit score:", err));
+    } else {
+      console.warn("Score too high, not submitting.");
+    }
+  }
+}
+
+

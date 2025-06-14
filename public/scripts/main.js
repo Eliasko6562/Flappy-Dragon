@@ -1,6 +1,8 @@
 const canvas = document.getElementById("canvas");
 const c = canvas.getContext("2d");
 
+const savedName = window.localStorage.getItem("playerName");
+
 let whoosh = new Audio();
     whoosh.src = "./sounds/Whooosh.mp3";
 let descend = new Audio();
@@ -9,6 +11,15 @@ let music = new Audio();
     music.src = "./sounds/music.mp3";
 let hit = new Audio();
     hit.src = "./sounds/AAAHHHHHH.mp3";
+
+// Retrieve mute settings from localStorage
+let isMusicMuted = window.localStorage.getItem("isMusicMuted") === "true";
+let isSfxMuted = window.localStorage.getItem("isSfxMuted") === "true";
+
+// Apply mute settings
+music.muted = isMusicMuted;
+whoosh.muted = isSfxMuted;
+hit.muted = isSfxMuted;
 
 let player = new Player();
 
@@ -62,20 +73,9 @@ function main() {
 }
 
 function liveScore () {
-    text(370, 35, "DarkSlateBlue", "30px Comic Sans MS", score); 
-    text(369.5, 60, "DarkSlateBlue", "15px Comic Sans MS", highScore);
+    text(370, 50, "DarkSlateBlue", "42px Comic Sans MS", score); 
+    text(370, 75, "DarkSlateBlue", "21px Comic Sans MS", highScore);
 }
-
-// Retrieve mute settings from localStorage
-let isMusicMuted = window.localStorage.getItem("isMusicMuted") === "true";
-let isSfxMuted = window.localStorage.getItem("isSfxMuted") === "true";
-
-// Apply mute settings
-music.muted = isMusicMuted;
-whoosh.muted = isSfxMuted;
-hit.muted = isSfxMuted;
-
-const savedName = window.localStorage.getItem("playerName");
 
 if (!savedName) {
     const modalEl = document.getElementById('modal');
@@ -111,6 +111,25 @@ if (!savedName) {
     startGame();
 }
 
+function fetchLeaderboard() {
+    fetch("https://flappy-dragon.eliascomastantine.workers.dev/leaderboard")
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.querySelector("#leaderboard tbody");
+            tbody.innerHTML = "";
+            data.forEach((entry, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${entry.username}</td>
+                    <td>${entry.score}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => console.error("Leaderboard fetch error:", err));
+}
+
 function startGame() {
     frametime = Date.now();
     music.loop = true;
@@ -138,25 +157,6 @@ function resetGame() {
     // start the game loop again
     frametime = Date.now();
     main();
-}
-
-function fetchLeaderboard() {
-    fetch("https://flappy-dragon.eliascomastantine.workers.dev/leaderboard")
-        .then(res => res.json())
-        .then(data => {
-            const tbody = document.querySelector("#leaderboard tbody");
-            tbody.innerHTML = "";
-            data.forEach((entry, index) => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${entry.username}</td>
-                    <td>${entry.score}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        })
-        .catch(err => console.error("Leaderboard fetch error:", err));
 }
 
 document.getElementById("musicButton").addEventListener("click", function() {
