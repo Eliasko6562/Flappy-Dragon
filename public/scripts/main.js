@@ -38,10 +38,6 @@ if (highScore == null) {
 }
 
 let gameOverFlag = false;
-
-let lastScoreSubmitTime = 0;
-const SCORE_SUBMIT_INTERVAL = 30 * 1000; // 30 seconds
-
 let scoreSubmitted = false;
 
 music.loop = true;
