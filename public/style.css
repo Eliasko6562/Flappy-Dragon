@@ -18,42 +18,63 @@ h1{
 }
 
 #leaderboard {
-    /* Remove position, left, top, transform */
     background: rgb(30, 30, 30);
-    padding: 32px 28px;
+    padding: 15px 10px;
     border-radius: 16px;
     color: darkslateblue;
-    min-width: 300px;
-    text-align: left;
     box-shadow: 0px 0px 25px 5px darkslateblue;
     border: 3px solid darkslateblue;
-    font-size: 1.15em;
+    font-size: 1.1em;
     font-family: Comic Sans MS;
     letter-spacing: 0.5px;
-    height: fit-content;  /* avoid full height stretch */
-}
-
-#leaderboard tbody {
-    display: block;
-    max-height: 400px; /* or whatever fits your layout */
-    overflow-y: auto;
-
+    height: fit-content;
+    min-width: 240px; /* Minimum width for the leaderboard */
+    max-width: 320px; /* Limit the leaderboard width */
+    margin: 0 auto;   /* Center the leaderboard */
 }
 
 #leaderboard table {
-    width: 100%;
     border-collapse: collapse;
+    table-layout: fixed; /* Ensures column widths are respected */
+    width: 100%;         /* Table fills the container */
+}
+
+#leaderboard colgroup col.col-rank {
+    width: 30px;
+}
+#leaderboard colgroup col.col-name {
+    width: 60px;
+}
+#leaderboard colgroup col.col-score {
+    width: 90px;
+}
+/* Add more col selectors as needed for more columns */
+
+#leaderboard tbody {
+    display: block;
+    max-height: 400px; /* Adjust as needed */
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: auto;
+    scrollbar-color: darkslateblue rgb(30, 30, 30);
+}
+
+#leaderboard tbody::-webkit-scrollbar {
+    width: 8px;
+    background: rgb(30, 30, 30);
+}
+
+#leaderboard tbody::-webkit-scrollbar-thumb {
+    background: darkslateblue;
+    border-radius: 6px;
 }
 
 #leaderboard thead, #leaderboard tbody tr {
     display: table;
     width: 100%;
     table-layout: fixed;
-    min-width: 240px; /* ensure the table is wide enough */
-    max-width: 360px; /* limit the width to prevent overflow */
     color: darkslateblue;
 }
-
 th{
     text-align: center;
     font-family: Comic Sans MS;
