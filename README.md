@@ -1,1 +1,1 @@
-https://eliasko6562.github.io/Flappy-Dragon/
+https://eliasko6562.github.io/Flappy-Dragon/public/
