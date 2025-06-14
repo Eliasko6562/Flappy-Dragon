@@ -1,16 +1,10 @@
 const canvas = document.getElementById("canvas");
 const c = canvas.getContext("2d");
 
-const savedName = window.localStorage.getItem("playerName");
-
-let whoosh = new Audio();
-    whoosh.src = "./sounds/Whooosh.mp3";
-let descend = new Audio();
-    descend.src = "./sounds/fchuuu.mp3";
-let music = new Audio();
-    music.src = "./sounds/music.mp3";
-let hit = new Audio();
-    hit.src = "./sounds/AAAHHHHHH.mp3";
+let whoosh = new Audio("./sounds/Whooosh.mp3");
+let descend = new Audio("./sounds/fchuuu.mp3");
+let music = new Audio("./sounds/music.mp3");
+let hit = new Audio("./sounds/AAAHHHHHH.mp3"); 
 
 // Retrieve mute settings from localStorage
 let isMusicMuted = window.localStorage.getItem("isMusicMuted") === "true";
@@ -20,8 +14,12 @@ let isSfxMuted = window.localStorage.getItem("isSfxMuted") === "true";
 music.muted = isMusicMuted;
 whoosh.muted = isSfxMuted;
 hit.muted = isSfxMuted;
+descend.muted = isSfxMuted;
 
 let player = new Player();
+
+let playerToken = null;
+const playerName = window.localStorage.getItem("playerName");
 
 let click = false;
 let clickedLastFrame = false;
@@ -44,6 +42,17 @@ let scoreSubmitted = false;
 
 music.loop = true;
  
+let lastTime = Date.now();
+
+/* Wait for Misa to check if is gooder to use
+function main() {
+    const now = Date.now();
+    frametime = (now - lastTime) / 1000;
+    lastTime = now;
+    ...
+}
+*/
+
 function main() {
     
     if (gameOverFlag){
@@ -77,7 +86,7 @@ function liveScore () {
     text(370, 75, "DarkSlateBlue", "21px Comic Sans MS", highScore);
 }
 
-if (!savedName) {
+if (!playerName) {
     const modalEl = document.getElementById('modal');
     const modal = new bootstrap.Modal(modalEl);
     modal.show();
@@ -111,6 +120,22 @@ if (!savedName) {
     startGame();
 }
 
+async function requestToken() {
+  try {
+    const resp = await fetch("https://flappy-dragon.eliascomastantine.workers.dev/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: playerName })
+    });
+    if (!resp.ok) throw new Error("Failed to get token");
+    const data = await resp.json();
+    window.localStorage.setItem("playerToken", data.token);
+    console.log("Player token obtained:", data.token);
+  } catch (err) {
+    console.error("Error requesting player token:", err);
+  }
+}
+
 function fetchLeaderboard() {
     fetch("https://flappy-dragon.eliascomastantine.workers.dev/leaderboard")
         .then(res => res.json())
@@ -130,7 +155,9 @@ function fetchLeaderboard() {
         .catch(err => console.error("Leaderboard fetch error:", err));
 }
 
-function startGame() {
+async function startGame() {
+    await requestToken();
+
     frametime = Date.now();
     music.loop = true;
 

@@ -133,19 +133,27 @@ function gameOver() {
 async function submitScore(score) {
   if (!scoreSubmitted) {
     scoreSubmitted = true;
-    const playerName = window.localStorage.getItem("playerName");
 
-    if (score <= 1000) { // Anti-cheat max score
-      fetch("https://flappy-dragon.eliascomastantine.workers.dev/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: playerName, score: score })
-      })
-      .then(() => {
+    const playerName = window.localStorage.getItem("playerName");
+    const storedToken = window.localStorage.getItem("playerToken");
+
+    if (!storedToken) {
+      console.warn("No player token found, cannot submit score.");
+      return;
+    }
+
+    if (score < 1000) { // Anti-cheat max score
+      try {
+        await fetch("https://flappy-dragon.eliascomastantine.workers.dev/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: playerName, score: score, token: storedToken })
+        });
         console.log("Score submitted.");
         fetchLeaderboard();
-      })
-      .catch(err => console.error("Failed to submit score:", err));
+      } catch (err) {
+        console.error("Failed to submit score:", err);
+      }
     } else {
       console.warn("Score too high, not submitting.");
     }
